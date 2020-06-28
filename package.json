@@ -1,0 +1,31 @@
+{
+  "name": "contributions",
+  "version": "0.1.0",
+  "description": "GitHub Contribution Count",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "tsc -d",
+    "dev": "tsc -d --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ethomson/contributions.git"
+  },
+  "keywords": [
+    "GitHub",
+    "Contribution"
+  ],
+  "author": "Edward Thomson <ethomson@edwardthomson.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ethomson/contributions/issues"
+  },
+  "homepage": "https://github.com/ethomson/contributions#readme",
+  "devDependencies": {
+    "typescript": "^3.9.5"
+  },
+  "dependencies": {
+    "@types/jsdom": "^16.2.3",
+    "jsdom": "^16.2.2"
+  }
+}
