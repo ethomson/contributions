@@ -33,6 +33,13 @@ export class ContributionDay {
 export class Contributions {
     private count: number | undefined;
     private days: ContributionDay[];
+    private static colors: string[] = [
+        '#ebedf0',
+        '#9be9a8',
+        '#40c463',
+        '#30a14e',
+        '#216e39'
+    ];
 
     private constructor(count: number | undefined, days: ContributionDay[]) {
         this.count = count;
@@ -43,25 +50,14 @@ export class Contributions {
         return this.days.slice(0);
     }
 
-    private static normalizeBackground(bg: string) {
-        if (bg.match(/^#[a-zA-Z0-9]{6}$/)) {
-            return bg.toLowerCase();
+    private static getIntensity(color: string): number {
+        const match = color.match(/^var\(--color-calendar-graph-day(?:-L([\d]+))?-bg\)$/);
+
+        if (!match) {
+            throw new Error(`unknown color: ${color}`);
         }
 
-        let rgb = bg.match(/^rgba?\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*\d+)?\s*\)$/i);
-
-        if (rgb) {
-            const r = parseInt(rgb[1]).toString(16);
-            const g = parseInt(rgb[2]).toString(16);
-            const b = parseInt(rgb[3]).toString(16);
-
-            return '#' +
-                (r.length == 1 ? '0' + r : r) +
-                (g.length == 1 ? '0' + g : g) +
-                (b.length == 1 ? '0' + b : b);
-        }
-
-        throw new Error(`invalid background color: '${bg}'`);
+        return match[1] ? parseInt(match[1]) : 0;
     }
 
     static async forUser(user: string): Promise<Contributions> {
@@ -87,16 +83,6 @@ export class Contributions {
             throw new Error('no graph');
         }
 
-        const intensity: { [key: string]: number } = { };
-        const legend = document.querySelectorAll('ul.legend li');
-
-        for (let i = 0; i < legend.length; i++) {
-            const given = window.getComputedStyle(legend[i], null).getPropertyValue('background-color');
-            const bg = Contributions.normalizeBackground(given);
-
-            intensity[bg] = i;
-        }
-
         const days = new Array();
         for (let block of document.querySelectorAll('svg.js-calendar-graph-svg rect.day')) {
             const date = block.getAttribute('data-date');
@@ -107,7 +93,8 @@ export class Contributions {
                 throw new Error('invalid svg');
             }
 
-            const day = new ContributionDay(date, parseInt(count), color, intensity[color]);
+            const intensity = Contributions.getIntensity(color);
+            const day = new ContributionDay(date, parseInt(count), this.colors[intensity], intensity);
             days.push(day);
         }
 
