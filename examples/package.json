@@ -1,0 +1,25 @@
+{
+  "name": "contributions-cli",
+  "version": "0.0.1",
+  "description": "GitHub Contribution Count (CLI)",
+  "main": "contributions.js",
+  "files": [],
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ethomson/contributions.git"
+  },
+  "keywords": [
+    "GitHub",
+    "Contribution"
+  ],
+  "author": "Edward Thomson <ethomson@edwardthomson.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ethomson/contributions/issues"
+  },
+  "homepage": "https://github.com/ethomson/contributions#readme",
+  "dependencies": {
+    "chalk": "^4.1.0"
+  }
+}
