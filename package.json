@@ -1,8 +1,12 @@
 {
   "name": "contributions",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "GitHub Contribution Count",
   "main": "lib/index.js",
+  "files": [
+    "lib/**",
+    "examples/**"
+  ],
   "scripts": {
     "build": "tsc -d",
     "dev": "tsc -d --watch"
