@@ -50,16 +50,6 @@ export class Contributions {
         return this.days.slice(0);
     }
 
-    private static getIntensity(color: string): number {
-        const match = color.match(/^var\(--color-calendar-graph-day(?:-L([\d]+))?-bg\)$/);
-
-        if (!match) {
-            throw new Error(`unknown color: ${color}`);
-        }
-
-        return match[1] ? parseInt(match[1]) : 0;
-    }
-
     static async forUser(user: string): Promise<Contributions> {
         const dom = await JSDOM.fromURL(`https://github.com/users/${user}/contributions`);
 
@@ -84,16 +74,16 @@ export class Contributions {
         }
 
         const days = new Array();
-        for (let block of document.querySelectorAll('svg.js-calendar-graph-svg rect.day')) {
+        for (let block of document.querySelectorAll('svg.js-calendar-graph-svg rect.ContributionCalendar-day')) {
             const date = block.getAttribute('data-date');
             const count = block.getAttribute('data-count');
-            const color = block.getAttribute('fill');
+            const level = block.getAttribute('data-level');
 
-            if (!date || !count || !count.match(/^\d+$/) || !color) {
+            if (!date || !count || !count.match(/^\d+$/) || !level || !level.match(/^\d+$/)) {
                 throw new Error('invalid svg');
             }
 
-            const intensity = Contributions.getIntensity(color);
+            const intensity = parseInt(level);
             const day = new ContributionDay(date, parseInt(count), this.colors[intensity], intensity);
             days.push(day);
         }
