@@ -76,12 +76,18 @@ export class Contributions {
         const days = new Array();
         for (let block of document.querySelectorAll('svg.js-calendar-graph-svg rect.ContributionCalendar-day')) {
             const date = block.getAttribute('data-date');
-            const count = block.getAttribute('data-count');
             const level = block.getAttribute('data-level');
+            const contributions = block.innerHTML.match(/^(\d+|No) /);
 
-            if (!date || !count || !count.match(/^\d+$/) || !level || !level.match(/^\d+$/)) {
+            if (!date || !level || !level.match(/^\d+$/)) {
                 throw new Error('invalid svg');
             }
+
+            if (!contributions || !contributions[1]) {
+                throw new Error('invalid svg');
+            }
+
+            const count = (contributions[1] === "No") ? "0" : contributions[1];
 
             const intensity = parseInt(level);
             const day = new ContributionDay(date, parseInt(count), this.colors[intensity], intensity);
