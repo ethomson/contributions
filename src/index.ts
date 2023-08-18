@@ -67,17 +67,17 @@ export class Contributions {
             }
         }
 
-        const graph = document.querySelector('svg.js-calendar-graph-svg');
+        const graph = document.querySelector('div.js-calendar-graph');
 
         if (graph == null) {
             throw new Error('no graph');
         }
 
         const days = new Array();
-        for (let block of document.querySelectorAll('svg.js-calendar-graph-svg rect.ContributionCalendar-day')) {
+        for (let block of document.querySelectorAll('div.js-calendar-graph td.ContributionCalendar-day')) {
             const date = block.getAttribute('data-date');
             const level = block.getAttribute('data-level');
-            const contributions = block.innerHTML.match(/^(\d+|No) /);
+            const contributions = block.children[0].innerHTML.match(/^(\d+|No) /);
 
             if (!date || !level || !level.match(/^\d+$/)) {
                 throw new Error('invalid svg');
