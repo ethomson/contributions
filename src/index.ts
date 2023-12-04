@@ -75,9 +75,17 @@ export class Contributions {
 
         const days = new Array();
         for (let block of document.querySelectorAll('div.js-calendar-graph td.ContributionCalendar-day')) {
+            const id = block.getAttribute('id');
             const date = block.getAttribute('data-date');
             const level = block.getAttribute('data-level');
-            const contributions = block.children[0].innerHTML.match(/^(\d+|No) /);
+
+            let contributions = null;
+
+            for (let tooltip of document.querySelectorAll('div.js-calendar-graph tool-tip')) {
+              if (tooltip.getAttribute('for') === id) {
+                contributions = tooltip.innerHTML.match(/^(\d+|No) /);
+              }
+            }
 
             if (!date || !level || !level.match(/^\d+$/)) {
                 throw new Error('invalid svg');
